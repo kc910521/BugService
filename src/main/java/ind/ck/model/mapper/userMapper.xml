@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="touch.user">
+
+	<resultMap type="ind.ck.model.vo.UserOperaVO" id="cuser">
+		<id column="uid" property="userId" />
+		<result column="uname" property="uname" />
+		<result column="upwd" property="upwd" />
+		<result column="bonus" property="bonus" />
+		<result column="phone_number" property="phoneNumber" />
+		<result column="portrait" property="portrait" />
+		<result column="sexual" property="sexual" />
+	</resultMap>
+	
+<!-- 	<parameterMap type="ind.ck.model.bean.CommonUser" id="cuser_param">
+		<parameter property="id" resultMap="uid" />
+		<parameter property="uname" resultMap="uname" />
+		<parameter property="upwd" resultMap="upwd" />
+		<parameter property="phoneNumber" resultMap="phone_number"/>
+	</parameterMap> -->
+
+	<select id="selectUser" resultMap="cuser" parameterType="ind.ck.model.bean.CommonUser">
+		select * from t_user  tus
+			<where>
+				<choose>
+					<when test="userId != null and userId != '' ">
+						 tus.uid = #{userId}
+					</when>
+					<otherwise>
+						(
+							tus.uname = #{uname}
+								OR
+							tus.phone_number = #{uname}
+						)
+						<if test="upwd != null and upwd != ''">
+							AND tus.upwd = #{upwd}
+						</if>
+					</otherwise>
+				</choose>
+			</where>
+		limit 0,1
+	</select>
+
+	<select id="selectUserAll" resultMap="cuser" parameterType="ind.ck.model.bean.CommonUser">
+		select * from t_user  tus
+			<where>
+				<if test="uname != null and uname != '' ">
+					tus.uname = #{uname}
+				</if>
+				<if test="phoneNumber != null and phoneNumber != '' ">
+					AND tus.phone_number = #{phoneNumber}
+				</if>
+				<if test="upwd != null and upwd != ''">
+					AND tus.upwd = #{upwd}
+				</if>
+			</where>
+	</select>
+	
+	<insert id="insertUser" parameterType="ind.ck.model.bean.CommonUser">
+		insert t_user (uid,uname,upwd
+				<if test="phoneNumber != null and phoneNumber != '' ">
+					,phone_number
+				</if>
+			) 
+			values 
+			(#{userId},#{uname},#{upwd}
+				<if test="phoneNumber != null and phoneNumber != '' ">
+					,#{phoneNumber}
+				</if>
+			)
+	</insert>
+	
+	<update id="mergeUserPwd" parameterType="ind.ck.model.bean.CommonUser" >
+		UPDATE t_user tuser SET tuser.upwd = #{upwd}
+			WHERE tuser.uid = #{userId}
+			LIMIT 1
+	</update>
+	
+	<update id="mergeUserName" parameterType="ind.ck.model.bean.CommonUser" >
+		UPDATE t_user tuser SET tuser.uname = #{uname}
+			WHERE tuser.uid = #{userId}
+			LIMIT 1
+	</update>
+	
+	<update id="mergeUserPortrait" parameterType="ind.ck.model.bean.CommonUser" >
+		UPDATE t_user tuser SET tuser.portrait = #{portrait}
+			WHERE tuser.uid = #{userId}
+			LIMIT 1
+	</update>
+	<update id="addUserBonus" parameterType="ind.ck.model.bean.CommonUser" >
+		UPDATE t_user tuser SET tuser.bonus = tuser.bonus+#{bonus}
+			WHERE tuser.uid = #{userId}
+			LIMIT 1
+	</update>
+	<update id="mergeUserSexual" parameterType="ind.ck.model.bean.CommonUser" >
+		UPDATE t_user tuser 
+			<choose>
+				<when test="sexual == null or sexual == '' or sexual == 'null' ">
+					SET tuser.sexual = null
+				</when>
+				<otherwise>
+					SET tuser.sexual = #{sexual}
+				</otherwise>
+			</choose>
+			WHERE tuser.uid = #{userId}
+			LIMIT 1
+	</update>
+	
+</mapper>

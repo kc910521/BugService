@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="touch.comment">
+
+
+
+	<select id="insertComment" parameterType="ind.ck.model.bean.Comment" resultType="map" statementType="CALLABLE">
+		CALL submit_comment (#{title},#{content},#{username},#{newsId},#{quoteId});
+	</select>
+	
+	
+	<select id="listComment" parameterType="ind.ck.model.bean.Comment" resultType="ind.ck.model.vo.CommentVO">
+		SELECT 
+			cmt.comment_id,
+			cmt.title,
+			cmt.content,
+			cmt.news_id,
+			cmt.username,
+			cmt.time_stamp,
+			cmtRel.quote_com_id quote_id,
+			CONCAT(tc2.username,":",tc2.content) quote_content
+		FROM t_comment cmt
+		LEFT JOIN t_comment_rel cmtRel
+		ON cmtRel.source_com_id = cmt.comment_id
+		LEFT JOIN t_comment tc2 
+		ON tc2.comment_id = cmtRel.quote_com_id
+		<where>
+			<if test="isShow != null and isShow != '' and isShow != 'null' ">
+				cmt.is_show = #{isShow}
+			</if>
+			<if test="newsId != null and newsId != ''  and newsId != 'null' ">
+				AND cmt.news_id = #{newsId}
+			</if>
+			<if test="commentId != null and commentId != ''  and commentId != 'null' ">
+				AND cmt.comment_id = #{commentId}
+			</if>
+			<if test="username != null and username != ''  and username != 'null' ">
+				AND cmt.username = #{username}
+			</if>
+		</where>
+		ORDER BY cmt.time_stamp ASC
+		LIMIT #{sqlPgNow},#{itemPerPage}
+	</select>
+	
+	<!-- 
+	
+	quoteid是被引用的id
+	
+	
+	DROP PROCEDURE if EXISTS submit_comment;
+CREATE PROCEDURE submit_comment (
+IN title VARCHAR(255),
+IN content VARCHAR(255),
+IN username VARCHAR(255),
+IN news_id CHAR(32),
+IN quote CHAR(32))
+BEGIN
+		DECLARE t_error INTEGER DEFAULT 0;  
+		DECLARE comment_id CHAR(32);
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET t_error=1; 
+	
+	SET comment_id = REPLACE(UUID(),'-','');
+	INSERT t_comment(comment_id,title,content,username,news_id) 
+		VALUES (comment_id,title,content,username,news_id);
+	
+	IF quote != '' && quote != 'null'
+		THEN 
+			select quote;
+			INSERT t_comment_rel VALUES (REPLACE(UUID(),'-',''),quote,comment_id);
+	end if;
+
+	IF t_error = 1 THEN  
+        ROLLBACK;  
+     ELSE  
+        COMMIT;  
+  END IF;
+END;
+
+call submit_comment('holy title2','hehehheheheh2','papa','18','921212');
+	
+	
+	
+	 -->
+	
+</mapper>

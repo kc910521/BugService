@@ -1,0 +1,100 @@
+@CHARSET "UTF-8";
+
+       .news_title {
+            text-align: center;
+            vertical-align: middle;
+            height: inherit;
+        }
+        .news_title span {
+            text-align: center;
+            vertical-align: middle;
+            /*line-height: 2.2;*/
+            padding-left: 10px;;
+            max-width: 70%;
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            -o-text-overflow:ellipsis;
+            overflow: hidden;
+            color: #b6b6b6;
+            display: block;
+        }
+
+        .article-title{
+            margin: 10% 3%;
+            text-align: center;
+        }
+
+        .article-title h1,.article-detail p{
+/*             -webkit-filter: invert(1);
+            -moz-filter: invert(1);
+            -o-filter: invert(1);
+            -ms-filter:invert(1);
+            filter:invert(1); */
+            color:#FFFFFF;
+            /*-ms-filter: "progid:DXImageTransform.Microsoft.invert(1)";*/
+           /* filter: progid:DXImageTransform.Microsoft.invert(1);*/
+        }
+        
+
+        body {
+            background-color: #444444;
+        }
+
+        .main_artical{
+            background-color: #333333;
+        }
+
+        .article-detail img {
+            margin-top: 40px;;
+            max-width: 350px;
+            display: inline-block;
+
+            text-align: center;
+            margin-bottom: 20px;
+
+
+            -webkit-filter:drop-shadow(5px 5px 5px #111111);
+            -moz-filter:drop-shadow(5px 5px 5px #111111);
+            -o-filter:drop-shadow(5px 5px 5px #111111);
+            filter:drop-shadow(5px 5px 5px #111111);
+            -ms-filter:"progid:DXImageTransform.Microsoft.Dropshadow(OffX=12, OffY=12, Color='#111111')";
+            
+/*             -webkit-filter: invert(0)!important;
+            -moz-filter: invert(0)!important;
+            -o-filter: invert(0)!important;
+            -ms-filter:invert(0)!important;
+            filter:invert(0)!important; */
+        }
+
+        /*over bootcss*/
+        .btn-info {
+            background-color: rgb(0, 0, 0);
+        }
+        
+        .model_bright{
+            background-color: #286090;
+    		border-color: #204d74;
+    		color: white;
+    		border-radius: 6px 6px 0px 0px;
+        }
+                .comment_div{
+           /* background-color: #333333;*/
+
+            border-color: #333333;
+        }
+        .list-group-item{
+            background-color:#444444;
+            color: #ffffff;
+            border-color: #333333;
+        }
+        .panel-heading{
+            background-color:  #333333!important;
+            border-color: #222222!important;
+        }
+        .quote_artical {
+            width: 80%;
+            vertical-align: middle;
+            padding: 5px;
+            background-color: #262626;
+            border-radius: 2px;;
+        }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="touch.order">
+
+	<resultMap type="ind.ck.model.bean.EOrder" id="orderWithUser">
+		<id column="tid" property="tid"/>
+		<result column="order_id" property="order_id"/>
+		<association property="user" fetchType="lazy" javaType="ind.ck.model.bean.CommonUser">
+			<id column="id" property="id"/>
+			<result column="username" property="username"/>
+		</association>
+	</resultMap>
+	
+<!-- 	<parameterMap type="ind.ck.model.bean.EOrder" id="">
+		<parameter property="" />
+	</parameterMap> -->
+
+
+	<select id="getOrderBy" parameterType="int" resultType="ind.ck.model.bean.EOrder">
+		select to1.* from t_rel_order to1
+		 where to1.tid = #{tid}
+	</select>
+	<select id="getOrderCondition" parameterType="hashmap" resultMap="orderWithUser">
+		select to1.*,user1.* from t_user user1
+		left join 
+		t_rel_order to1
+		on user1.id = to1.user_id
+		 where 1=1
+
+		 <if test="tid != null and user_id != null">
+		 and (
+		 	to1.tid = #{tid}
+		 	or to1.user_id = #{user_id}
+		 )
+		 
+		 </if>
+	</select>
+	
+	<select id="getOrderByUser" parameterType="ind.ck.model.bean.CommonUser" resultType="ind.ck.model.bean.EOrder">
+		SELECT rorder.* FROM t_rel_order rorder
+		<where>
+			<if test="username != null"></if>
+			<if test="id != 0">
+				rorder.user_id = #{id}
+			</if>
+		</where>
+	
+	</select>
+	
+	
+	<insert id="insertOrder" parameterType="ind.ck.model.bean.EOrder" keyProperty="tid" useGeneratedKeys="true">
+		INSERT INTO t_rel_order (user_id,order_id)
+		VALUES (#{user_id},#{order_id})
+	</insert>
+	
+	<delete id="deleteOrderByIds" parameterType="java.util.List">
+		DELETE FROM t_rel_order 
+			WHERE tid IN
+			<foreach collection="list" item="titm" index="idx" open="(" close=")" separator=",">
+				#{titm}
+			</foreach>
+		
+	</delete>
+	
+	
+	
+</mapper>

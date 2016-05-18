@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>BugService</display-name>
+  
+  	<context-param>
+  		<param-name>base_home</param-name>
+  		<param-value>D:\\apache-tomcat-8.0.32\\webapps\\BugService</param-value>
+  	</context-param>
+  
+	<servlet>
+		<servlet-name>springmvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	  <init-param>  
+	      <param-name>contextConfigLocation</param-name>  
+	      <param-value>/WEB-INF/application*.xml</param-value>  
+	  </init-param>
+	  <load-on-startup>1</load-on-startup>
+	</servlet>
+
+
+	<!-- velocity config -->
+	<servlet>
+		<servlet-name>velocity</servlet-name>
+		<servlet-class>org.apache.velocity.tools.view.servlet.VelocityViewServlet</servlet-class>
+		<init-param>
+			<param-name>org.apache.velocity.properties</param-name>
+			<param-value>/WEB-INF/velocity.properties</param-value>
+		</init-param>
+		<init-param>
+     		<param-name>org.apache.velocity.toolbox</param-name>
+     		<param-value>/WEB-INF/tools.xml</param-value>
+  		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>springmvc</servlet-name>
+		<url-pattern>*.mk</url-pattern>
+	</servlet-mapping>  
+	
+	<servlet-mapping>
+        <servlet-name>velocity</servlet-name>
+		<url-pattern>*.html</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>neverLand</servlet-name>
+		<servlet-class>ind.ck.common.util.ProperServlet</servlet-class>
+		<init-param>
+			<param-name>base_home</param-name>
+  			<param-value>D:\\apache-tomcat-8.0.32\\webapps\\BugService</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	
+	
+	<servlet-mapping>
+		<servlet-name>neverLand</servlet-name>
+		<url-pattern>*.never</url-pattern>
+	</servlet-mapping>
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <error-page>
+  	<error-code>404</error-code>
+  	<location>/common/noFound.mk</location>
+  </error-page>
+  
+  <error-page>
+  	<error-code>500</error-code>
+  	<location>/common/exception.mk</location>
+  </error-page>
+  
+</web-app>

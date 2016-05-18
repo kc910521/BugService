@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		      http://www.springframework.org/schema/context
+      		  http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop 
+			http://www.springframework.org/schema/aop/spring-aop.xsd
+			http://www.springframework.org/schema/tx 
+			http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+
+  <!-- 配置数据源--> 
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/test"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value=""></property>
+	</bean>
+	 
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+	    <property name="dataSource" ref="dataSource" />
+	    <property name="configLocation" value="classpath:Configuration.xml" />  
+	    <property name="mapperLocations" value="classpath:*/mapper/*.xml" />  
+	</bean>  
+<!-- 	<bean id="iUserOper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+	     <property name="mapperInterface" value="com.springMyBatis.system.dao.UserDao"></property>  
+	     <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>  
+	</bean>   -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" >
+       <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+
+	
+	    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->  
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+        <property name="basePackage" value="ind.ck.dao" />  
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>  
+    </bean>  
+
+
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->  
+    <bean id="transactionManager"  
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource" />  
+    </bean>
+
+
+	<!-- 哪些类哪些方法使用事务 -->
+    <aop:config>
+        <aop:pointcut id="allServiceMethod"
+            expression="execution(* ind.ck.service.*.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="allServiceMethod" />
+    </aop:config>
+
+    <!-- 事务的传播特性 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="del*" propagation="REQUIRED" />
+            <tx:method name="modify*" propagation="REQUIRED" />
+            <tx:method name="register*" propagation="REQUIRED" />
+            <tx:method name="merge*" propagation="REQUIRED" />
+            <tx:method name="*" propagation="REQUIRED" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+
+
+	<!-- http interface -->
+	<bean name="defaultHttpClient" class="org.apache.http.impl.client.DefaultHttpClient"/>
+	
+	<bean name="newsServiceImpl" class="ind.ck.service.news.NewsServiceImpl">
+		<property name="urlBody">
+			<value type="java.lang.String">http://lchbl.com/api/ruanwen</value>
+		</property>
+	</bean>
+	
+	<!-- mybatis - spring -->
+	
+
+	
+</beans>

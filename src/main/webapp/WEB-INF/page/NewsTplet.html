@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title></title>
+    <link rel="stylesheet" href="/BugService/bootstrap335/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+        @-ms-viewport       { width: device-width; }
+    </style>
+    <link rel="stylesheet" href="/BugService/css/news.css" type="text/css" />
+</head>
+<body>
+<!--title-->
+    <div class="container-fluid">
+<!--         <nav class="navbar navbar-default navbar-inverse navbar-fixed-top fade">
+            <div class="container-fluid">
+                Brand and toggle get grouped for better mobile display
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div class="navbar-brand btn-info" href="#" >
+                        <a class="">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            后退</a>
+                    </div>
+                    <div class="navbar-nav navbar-text news_title">
+                        <strong><span>${NewsP1}.</span></strong>
+                    </div>
+                </div>
+
+                Collect the nav links, forms, and other content for toggling
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">分享至...<span class="caret"></span></a>
+                            <ul class="dropdown-menu take_share">
+                                <li><a href="javascript:void(0);" data-toggle="modal" data-target="#myModal">谷歌</a></li>
+                                <li><a href="javascript:void(0);" data-toggle="modal" data-target="#myModal">GITHUB</a></li>
+                                <li><a href="javascript:void(0);" data-toggle="modal" data-target="#myModal">微软</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="javascript:void(0);" data-toggle="modal" data-target="#myModal">邮件联系人</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">退出</a></li>
+                    </ul>
+                </div>/.navbar-collapse
+            </div>/.container-fluid
+        </nav> -->
+    </div>
+<!--news information-->
+    <div class="container main_artical" style="margin-top: 5%; ">
+        <article>
+	        <div class="article-title">
+	             #if  (!$NewsP1) 
+				    <h1>ILLEGAL ACTION</h1>
+				#else
+				    <h1>${NewsP1}</h1>
+				#end 
+	        </div>
+		</article>
+		<article>
+	        <div class="article-detail">
+	 			#if  (!$NewsP2) 
+				    <p>已经锁定你了，别瞎点了。</p>
+				#else
+				    <p>${NewsP2}</p>
+				#end 
+	 			
+	        </div>
+		</article>
+
+    </div>
+    
+    
+    
+    <br/>
+    <div class="container panel panel-primary comment_div" style="padding: 0px;">
+         <div class="panel-heading">
+             <span>群众评论:</span>
+         </div>
+         <span id="sp_newsId" style="display: none;">${NewsId}</span>
+         <ul id="comment_ul" class="list-group">
+<!--             <li class="list-group-item">
+                <span class="badge">14</span>
+                Cras justo2
+            </li>-->
+            <li class="list-group-item">
+                <span class="badge">0</span>
+                		暂无
+            </li> 
+         </ul>
+    </div>
+    
+    <!-- Modal -->
+<!--     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header model_bright">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">分享到:&nbsp;<strong><span class="share_target"></span></strong></h4>
+                </div>
+                <div class="modal-body">
+                    <p>&nbsp;我发现了一篇文章叫做：${NewsP1},来看看吧！</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">分享</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <script type="application/javascript" src="/BugService/js/jquery-2.2.1.js"></script>
+
+    <script type="application/javascript" src="/BugService/js/newsJs.js"></script>
+
+    <script type="application/javascript" src="/BugService/bootstrap335/js/bootstrap.min.js"></script>
+    
+    <script type="application/javascript">
+
+
+        $(function(){
+            $.support.transition = true;
+            regFlushComment();
+        });
+    </script>
+</body>
+</html>
